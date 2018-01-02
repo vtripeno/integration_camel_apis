@@ -15,4 +15,8 @@ let app = express();
     // Starting server
     const port = app.get('config').port || 4000;
     app.listen(port);
+}).catch((err) => {
+    if (err) {
+        logger.crit(`Error Running an API Automation Server. Error: ${JSON.stringify(err)}`);
+    }
 });
