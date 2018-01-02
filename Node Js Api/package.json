@@ -1,0 +1,53 @@
+{
+  "name": "api-automation",
+  "version": "1.0.0",
+  "description": "API Automation component for handling API Automation operations.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "start-mon": "nodemon app.js",
+    "pretest": "eslint --ignore-path .gitignore ./",
+    "test": "mocha --full-trace test/**/*.test.js",
+    "coverage": "nyc --reporter=html --reporter=text mocha test/**/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CodeSorcerersSquad/graphql-user.git"
+  },
+  "keywords": [
+    "automation",
+    "api"
+  ],
+  "author": "Practice API Technologies BR <practice.APItechnologies.BR@gft.com>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://git.gft.com/api-automation-asset/api-automation/issues"
+  },
+  "homepage": "https://git.gft.com/api-automation-asset/api-automation",
+  "dependencies": {
+    "aws-sdk": "^2.173.0",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "express-winston": "^2.4.0",
+    "fs-extra": "^5.0.0",
+    "healthcheck-middleware": "^1.0.1",
+    "json-yaml": "^0.1.0",
+    "lodash": "^4.17.4",
+    "moment": "^2.20.1",
+    "mongodb": "^2.2.33",
+    "mongoose": "^4.13.4",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2",
+    "swagger-tools": "^0.10.3",
+    "unzipper": "^0.8.11",
+    "winston": "^2.4.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.0.2",
+    "eslint": "^4.14.0",
+    "eslint-plugin-react": "^7.5.1",
+    "mocha": "^4.0.1",
+    "nyc": "^11.3.0",
+    "should": "^13.1.3"
+  }
+}
