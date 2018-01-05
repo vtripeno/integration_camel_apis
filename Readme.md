@@ -53,3 +53,4 @@ rabbitmq-plugins start
 ```
 
 Your management will be located at: 'http://server-name:15672'
+And the default user which RabbitMQ will create for you is user: 'guest' password: 'guest'
