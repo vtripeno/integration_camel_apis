@@ -4,7 +4,9 @@
 # RabbitMQ
 
 For install the RabbitMQ you will need install the Erlang first of all.
+
 After that you will download the RabbitMQ installer and execute this.
+
 If when you try install RabbitMQ you receive the message "Insufficient system resources exist to complete the requested service", please follow this steps:
 
 ## Fixing RabbitMQ installation
@@ -30,6 +32,7 @@ HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Manag
 To do this, follow these steps:
 
 •On the Edit menu, point to New, and then click DWORD Value.
+
 •In the New Value #1 box, type PagedPoolSize, and then press ENTER.
 
 8.Right-click PagedPoolSize, and then click Modify.
