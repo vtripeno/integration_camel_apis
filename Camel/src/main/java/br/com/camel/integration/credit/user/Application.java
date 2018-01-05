@@ -7,6 +7,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * @author Victor Tripeno
+ * This class is responsible to start the Spring Boot Application
+ */
+
 @SpringBootApplication
 @Configuration
 @EnableAutoConfiguration
