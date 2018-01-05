@@ -1,5 +1,18 @@
 # Integration Camel Apis
 
+This project have the objective to show how is the Apache Camel behavior when we try to integrate APIS, RabbitMQ and MongoDB.
+
+It is working with Apache Camel, MongoDB, RabbitMQ, Node Js, and Spring Boot.
+
+The lifecycle is the Node JS API will send a message to Apache Camel, the Apache Camel will wait for the other message with the same Correlation ID to make an aggregation. 
+When the Spring Boot API post the message in RabbitMQ queue, the Apache Camel will take this message and verify the Correlation ID to make the aggregation with the Node Js API. 
+After the aggregation, the Apache Camel will be the responsible to save the new message in a MongoDB database. And finally the Apache Camel will post the new message in the 
+RabbitMQ out queue. If during this process occur some problem, the Apache Camel need to send the message to a dead letter queue, and this queue will retry send this message 
+3 times, once per 5 minutes.
+
+* IN QUEUE: CREDIT.USER.IN
+* OUT QUEUE: CREDIT.USER.OUT
+* Dead Letter Queue (backup): CREDIT.USER.DLQ
 
 # RabbitMQ
 

@@ -4,6 +4,10 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.rest.RestBindingMode;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author Victor Tripeno
+ * This configuration is for start the Apache Camel application with the Spring Boot servlet
+ */
 @Component
 public class RestConfiguration extends RouteBuilder {
 
