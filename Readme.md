@@ -1,6 +1,6 @@
 # Integration Camel Apis
 
-This project have the objective to show how is the Apache Camel behavior when we try to integrate APIS, RabbitMQ and MongoDB.
+This project have the objective to show how the Apache Camel behavior when we try to integrate APIS, RabbitMQ and MongoDB.
 
 It is working with Apache Camel, MongoDB, RabbitMQ, Node Js, and Spring Boot.
 
