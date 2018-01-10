@@ -1,4 +1,4 @@
 {
   "port": "4000",
-  "url_camel": "localhost:9090"
+  "url_camel": "http://localhost:9090/credit"
 }

@@ -1,6 +1,8 @@
 package br.com.camel.integration.credit.user.routes;
 
+import br.com.camel.integration.credit.user.model.Credit;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.model.dataformat.JsonLibrary;
 import org.springframework.stereotype.Component;
 
 /**
@@ -15,6 +17,9 @@ public class CreditRoute extends RouteBuilder {
         from("direct:credit").id("Credit")
             .log("${body}")
             .setHeader("correlationId").jsonpath("id")
+            .marshal().json(JsonLibrary.Jackson)
+            .unmarshal().json(JsonLibrary.Jackson, Credit.class)
+            .log("${body}")
             .to("direct:integration");
     }
 }

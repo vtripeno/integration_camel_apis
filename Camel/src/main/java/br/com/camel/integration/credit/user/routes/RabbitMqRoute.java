@@ -14,6 +14,7 @@ public class RabbitMqRoute extends RouteBuilder {
     public void configure() throws Exception {
         from("rabbitmq:localhost:5672/tasks?username=guest&password=guest&autoDelete=false&routingKey=camel&queue=CREDIT.USER.IN&bridgeEndpoint=true")
 
-                .to("rabbitmq:localhost:5672/tasks?username=guest&password=guest&autoDelete=false&routingKey=camel&queue=CREDIT.USER.OUT&bridgeEndpoint=true");
+                // TODO: CREATE CORRELATION ID AND FILTER THE MESSAGE TO PUT IN A POJO
+                .to("direct:integration");
     }
 }

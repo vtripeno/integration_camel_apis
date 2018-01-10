@@ -29,16 +29,14 @@ module.exports = function(app) {
         const opt = {
             method: 'POST',
             uri: config.url_camel,
-            body: {
-                data: req.body
-            },
+            body: req.body,
             headers: {
                 'Content-Type': 'application/json'
              },
             json: true
         };
 
-        //rp(opt);
+        rp(opt);
         console.log(opt);
 
         res.json({ status: "message sent" });

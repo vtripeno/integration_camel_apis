@@ -24,7 +24,8 @@ public class IntegrationRoute extends RouteBuilder {
                 }
                 return newExchange;
             }).eagerCheckCompletion().completionSize(2)
-            .to("log:foo")
-        .end();
+
+            //  TODO: LOGIC TO SAVE DATA IN MONGODB
+            .to("rabbitmq:localhost:5672/tasks?username=guest&password=guest&autoDelete=false&routingKey=camel&queue=CREDIT.USER.OUT&bridgeEndpoint=true");
     }
 }
