@@ -2,6 +2,8 @@ package br.com.camel.integration.credit.user;
 
 
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.mongodb.MongoClient;
+import org.apache.camel.Component;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -31,6 +33,11 @@ public class Application {
         Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
         builder.featuresToEnable(SerializationFeature.WRAP_ROOT_VALUE); // enables wrapping for root elements
         return builder;
+    }
+
+    @Bean(name = "myDb")
+    public MongoClient myDb() {
+        return new MongoClient();
     }
 
 }

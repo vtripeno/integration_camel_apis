@@ -12,7 +12,7 @@ public class RabbitMqRoute extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
-        from("rabbitmq:localhost:5672/tasks?username=guest&password=guest&autoDelete=false&routingKey=camel&queue=CREDIT.USER.IN&bridgeEndpoint=true")
+        from("rabbitmq:{{RABBITMQ_ADDRESS}}/tasks?username={{RABBITMQ_USERNAME}}&password={{RABBITMQ_PSWD}}&autoDelete=false&routingKey=camel&queue={{RABBITMQ_QUEUE_IN}}&bridgeEndpoint=true")
 
                 // TODO: CREATE CORRELATION ID AND FILTER THE MESSAGE TO PUT IN A POJO
                 .to("direct:integration");

@@ -163,6 +163,9 @@ fabric.properties
 # Sonarlint plugin
 .idea/sonarlint
 
+# MongoDB
+data/
+
 # End of https://www.gitignore.io/api/intellij
 
 spring-boot-api-financial.iml

@@ -11,6 +11,10 @@ import org.springframework.stereotype.Component;
 public class IntegrationRoute extends RouteBuilder {
     @Override
     public void configure() throws Exception {
+
+        // TODO: CRESTE THE ROUTE FOR DLQ
+
+
         from("direct:integration").id("Integration")
             .to("log:foo")
             .aggregate(header("correlationId"),(oldExchange, newExchange) -> {
@@ -26,6 +30,7 @@ public class IntegrationRoute extends RouteBuilder {
             }).eagerCheckCompletion().completionSize(2)
 
             //  TODO: LOGIC TO SAVE DATA IN MONGODB
-            .to("rabbitmq:localhost:5672/tasks?username=guest&password=guest&autoDelete=false&routingKey=camel&queue=CREDIT.USER.OUT&bridgeEndpoint=true");
+            .to("rabbitmq:{{RABBITMQ_ADDRESS}}/tasks?username={{RABBITMQ_USERNAME}}&password={{RABBITMQ_PSWD}}&autoDelete=false&routingKey=camel&queue={{RABBITMQ_QUEUE_OUT}}&bridgeEndpoint=true")
+            .to("mongodb:myDb?database={{DATABASE}}&collection={{COLLECTION}}&operation=insert");
     }
 }
