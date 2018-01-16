@@ -21,8 +21,11 @@ public class IntegrationRoute extends RouteBuilder {
             .aggregate(header("correlationId"), new IntegrationAggregationStrategy()).eagerCheckCompletion().completionSize(2)
 
             //  TODO: LOGIC TO SAVE DATA IN MONGODB
+            /* MESSAGE NEED TO HAVE STATUS EQUALS 'IN PROGRESS' */
+            .to("mongodb:myDb?database={{DATABASE}}&collection={{COLLECTION}}&operation=save")
             .to("rabbitmq:{{RABBITMQ_ADDRESS}}/tasks?username={{RABBITMQ_USERNAME}}&password={{RABBITMQ_PSWD}}&autoDelete=false&routingKey=camel&queue={{RABBITMQ_QUEUE_OUT}}&bridgeEndpoint=true")
-            .to("mongodb:myDb?database={{DATABASE}}&collection={{COLLECTION}}&operation=insert");
+            /* MESSAGE NEED TO HAVE STATUS EQUALS 'FINISHED' */
+            .to("mongodb:myDb?database={{DATABASE}}&collection={{COLLECTION}}&operation=save");
     }
 
 
@@ -31,6 +34,7 @@ public class IntegrationRoute extends RouteBuilder {
 
     /*
     * @Override
+    *
 	public void configure() throws Exception {
 
 		// Dead Letter Channel, para fazer 3 tentativas de entreta a cada 60 segundos
