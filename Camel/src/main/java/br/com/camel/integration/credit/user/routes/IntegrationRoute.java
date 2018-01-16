@@ -1,5 +1,6 @@
 package br.com.camel.integration.credit.user.routes;
 
+import br.com.camel.integration.credit.user.aggregation.IntegrationAggregationStrategy;
 import org.apache.camel.builder.RouteBuilder;
 import org.springframework.stereotype.Component;
 
@@ -17,17 +18,7 @@ public class IntegrationRoute extends RouteBuilder {
 
         from("direct:integration").id("Integration")
             .to("log:foo")
-            .aggregate(header("correlationId"),(oldExchange, newExchange) -> {
-                System.out.println("ENTROU AGG");
-                if(oldExchange != null) {
-                    System.out.println("OLD " + oldExchange.getIn().getBody(String.class));
-                    System.out.println("VALOR CONCATENADO: old = " + oldExchange.getIn().getBody(String.class) + " new = " + newExchange.getIn().getBody(String.class));
-                }
-                if(newExchange != null) {
-                    System.out.println("NEW " + newExchange.getIn().getBody(String.class));
-                }
-                return newExchange;
-            }).eagerCheckCompletion().completionSize(2)
+            .aggregate(header("correlationId"), new IntegrationAggregationStrategy()).eagerCheckCompletion().completionSize(2)
 
             //  TODO: LOGIC TO SAVE DATA IN MONGODB
             .to("rabbitmq:{{RABBITMQ_ADDRESS}}/tasks?username={{RABBITMQ_USERNAME}}&password={{RABBITMQ_PSWD}}&autoDelete=false&routingKey=camel&queue={{RABBITMQ_QUEUE_OUT}}&bridgeEndpoint=true")

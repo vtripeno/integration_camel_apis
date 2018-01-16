@@ -70,4 +70,13 @@ rabbitmq-plugins start
 
 Your management will be located at: 'http://server-name:15672'.
 
-And the default user which RabbitMQ will create for you is user: 'guest' password: 'guest'
+And the default user which RabbitMQ will create for you is user: 'guest' password: 'guest'.
+
+
+# MongoDB
+
+In this project you will need install MongoDB for connect on DataBase.
+
+After install MongoDb by default you will uses the address 'http://server-name:27017'.
+
+The camel route will work with Database: 'camel-credit-user' and Collection: 'credit-user'.
