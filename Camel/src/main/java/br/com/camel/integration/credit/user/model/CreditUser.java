@@ -1,5 +1,6 @@
 package br.com.camel.integration.credit.user.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.springframework.boot.jackson.JsonComponent;
@@ -17,9 +18,11 @@ public class CreditUser implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String id;
+    private String cpf;
     private Double value;
     private Double anualPercentage;
 
+    @JsonProperty
     public String getId() {
         return id;
     }
@@ -28,6 +31,16 @@ public class CreditUser implements Serializable {
         this.id = id;
     }
 
+    @JsonProperty
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    @JsonProperty
     public Double getValue() {
         return value;
     }
@@ -36,6 +49,7 @@ public class CreditUser implements Serializable {
         this.value = value;
     }
 
+    @JsonProperty("anual_percentage")
     public Double getAnualPercentage() {
         return anualPercentage;
     }
@@ -43,6 +57,5 @@ public class CreditUser implements Serializable {
     public void setAnualPercentage(Double anualPercentage) {
         this.anualPercentage = anualPercentage;
     }
-
 
 }

@@ -16,17 +16,17 @@ public class Credit implements Serializable {
      */
     private static final long serialVersionUID = 1L;
 
-    private String id;
+    private String cpf;
     private Double value;
     private Double anualPercentage;
 
     @JsonProperty
-    public String getId() {
-        return id;
+    public String getCpf() {
+        return cpf;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
     @JsonProperty
@@ -50,7 +50,7 @@ public class Credit implements Serializable {
     @Override
     public String toString() {
         return "Credit{" +
-                "id='" + id + '\'' +
+                "cpf='" + cpf + '\'' +
                 ", value=" + value +
                 ", anualPercentage=" + anualPercentage +
                 '}';

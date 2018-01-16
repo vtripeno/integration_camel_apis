@@ -16,7 +16,7 @@ public class CreditRoute extends RouteBuilder {
     public void configure() throws Exception {
         from("direct:credit").id("Credit")
             .log("${body}")
-            .setHeader("correlationId").jsonpath("id")
+            .setHeader("correlationId").jsonpath("cpf")
             .marshal().json(JsonLibrary.Jackson)
             .unmarshal().json(JsonLibrary.Jackson, Credit.class)
             .log("${body}")

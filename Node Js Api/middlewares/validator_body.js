@@ -25,7 +25,7 @@ module.exports = function(app){
             checkReportForREST
         } = validator(req);
 
-        const fieldsAllowed = ['id', 'value', 'anual_percentage'];
+        const fieldsAllowed = ['cpf', 'value', 'anual_percentage'];
 
         checkField('body', `ATTRIBUTE IS NOT ALLOWED, PERMITED ATTRIBUTES ONLY: ${fieldsAllowed}`).custom(function(body) {
             return _.chain(Object.keys(body)).difference(fieldsAllowed).isEmpty().value();
