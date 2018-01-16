@@ -1,4 +1,4 @@
-package hello;
+package com.occ.user.app;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
