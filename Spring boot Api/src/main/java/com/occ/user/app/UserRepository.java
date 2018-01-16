@@ -19,19 +19,19 @@ public class UserRepository {
 		john.setCpf("1131231455");
 		john.setAge("25");
 
-		users.put(john.getName(), john);
+		users.put(john.getCpf(), john);
 
 		User bob = new User();
         bob.setName("Bob");
         bob.setCpf("12315156671");
         bob.setAge("19");
 
-		users.put(bob.getName(), bob);
+		users.put(bob.getCpf(), bob);
 
 	}
 
-	public User findUser(String name) {
-		Assert.notNull(name, "The user's name must not be null");
-		return users.get(name);
+	public User findUser(String cpf) {
+		Assert.notNull(cpf, "The user's cpf must not be null");
+		return users.get(cpf);
 	}
 }
