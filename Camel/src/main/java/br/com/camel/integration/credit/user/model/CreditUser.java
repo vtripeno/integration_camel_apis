@@ -21,8 +21,9 @@ public class CreditUser implements Serializable {
     private String cpf;
     private Double value;
     private Double anualPercentage;
+    private String statusMessage;
 
-    @JsonProperty
+    @JsonProperty("_id")
     public String getId() {
         return id;
     }
@@ -58,4 +59,12 @@ public class CreditUser implements Serializable {
         this.anualPercentage = anualPercentage;
     }
 
+    @JsonProperty
+    public String getStatusMessage() {
+        return statusMessage;
+    }
+
+    public void setStatusMessage(String statusMessage) {
+        this.statusMessage = statusMessage;
+    }
 }

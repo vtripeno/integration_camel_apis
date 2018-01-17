@@ -1,6 +1,7 @@
 package br.com.camel.integration.credit.user.routes;
 
 import br.com.camel.integration.credit.user.aggregation.IntegrationAggregationStrategy;
+import com.mongodb.DBObject;
 import org.apache.camel.builder.RouteBuilder;
 import org.springframework.stereotype.Component;
 
@@ -21,9 +22,11 @@ public class IntegrationRoute extends RouteBuilder {
             .aggregate(header("correlationId"), new IntegrationAggregationStrategy()).eagerCheckCompletion().completionSize(2)
 
             //  TODO: LOGIC TO SAVE DATA IN MONGODB
-            /* MESSAGE NEED TO HAVE STATUS EQUALS 'IN PROGRESS' */
+            .convertBodyTo(DBObject.class)
             .to("mongodb:myDb?database={{DATABASE}}&collection={{COLLECTION}}&operation=save")
+            /* CHANGE THE STATUS MESSAGE TO 'FINISHED' */
             .to("rabbitmq:{{RABBITMQ_ADDRESS}}/tasks?username={{RABBITMQ_USERNAME}}&password={{RABBITMQ_PSWD}}&autoDelete=false&routingKey=camel&queue={{RABBITMQ_QUEUE_OUT}}&bridgeEndpoint=true")
+            .convertBodyTo(DBObject.class)
             /* MESSAGE NEED TO HAVE STATUS EQUALS 'FINISHED' */
             .to("mongodb:myDb?database={{DATABASE}}&collection={{COLLECTION}}&operation=save");
     }
