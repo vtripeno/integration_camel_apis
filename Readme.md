@@ -85,7 +85,7 @@ The camel route will work with Database: 'camel-credit-user' and Collection: 'cr
 
 - Final contract spring boot API
 - Final contract node js API
-- Dead letter queue 
+- Dead letter channel 
 - Finish aggregations strategy
 - Readme Node JS and Spring boot API
 - Points to save data with MongoDB
