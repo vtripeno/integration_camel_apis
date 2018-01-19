@@ -80,3 +80,11 @@ In this project you will need install MongoDB for connect on DataBase.
 After install MongoDb by default you will uses the address 'http://server-name:27017'.
 
 The camel route will work with Database: 'camel-credit-user' and Collection: 'credit-user'.
+
+# TO DO
+
+- Final contract spring boot API
+- Final contract node js API
+- Dead letter queue 
+- Finish aggregations strategy
+- Readme Node JS and Spring boot API
