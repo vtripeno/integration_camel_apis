@@ -1,5 +1,7 @@
 package br.com.camel.integration.credit.user.routes;
 
+import br.com.camel.integration.credit.user.Processors.FailExecution;
+import br.com.camel.integration.credit.user.Processors.RetryExecution;
 import br.com.camel.integration.credit.user.aggregation.IntegrationAggregationStrategy;
 import com.mongodb.DBObject;
 import org.apache.camel.builder.RouteBuilder;
@@ -14,13 +16,25 @@ public class IntegrationRoute extends RouteBuilder {
     @Override
     public void configure() throws Exception {
 
-        // TODO: CRESTE THE ROUTE FOR DLQ
+        /**
+         * Dead Letter Channel, it will try delivery the message three times each 60 seconds
+         */
+        errorHandler(
+                deadLetterChannel("rabbitmq{{RABBITMQ_ADDRESS}}/tasks?username={{RABBITMQ_USERNAME}}&password={{RABBITMQ_PSWD}}&autoDelete=false&routingKey=camel&queue={{RABBITMQ_QUEUE_DLQ=CREDIT.USER.DLQ}}&bridgeEndpoint=true")
+                        .logExhaustedMessageHistory(true)
+                        .maximumRedeliveries(3)
+                        .redeliveryDelay(60000)
+                        .onPrepareFailure(new FailExecution())
+                        .onRedelivery(new RetryExecution())
+        );
 
 
         from("direct:integration").id("Integration")
             .to("log:foo")
             .aggregate(header("correlationId"), new IntegrationAggregationStrategy()).eagerCheckCompletion().completionSize(2)
+            .to("direct:out-queue");
 
+        from("direct:out-queue").id("OutQueue")
             //  TODO: LOGIC TO SAVE DATA IN MONGODB
             .convertBodyTo(DBObject.class)
             .to("mongodb:myDb?database={{DATABASE}}&collection={{COLLECTION}}&operation=save")

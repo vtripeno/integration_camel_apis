@@ -89,3 +89,4 @@ The camel route will work with Database: 'camel-credit-user' and Collection: 'cr
 - Finish aggregations strategy
 - Readme Node JS and Spring boot API
 - Points to save data with MongoDB
+- Create a Java Class specialist in save data in MongoDB for Fail and Retry DLC
