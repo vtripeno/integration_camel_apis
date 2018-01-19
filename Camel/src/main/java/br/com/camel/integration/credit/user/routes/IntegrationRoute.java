@@ -38,7 +38,7 @@ public class IntegrationRoute extends RouteBuilder {
             //  TODO: LOGIC TO SAVE DATA IN MONGODB
             .convertBodyTo(DBObject.class)
             .to("mongodb:myDb?database={{DATABASE}}&collection={{COLLECTION}}&operation=save")
-            /* CHANGE THE STATUS MESSAGE TO 'FINISHED' */
+            /* TODO: CHANGE THE STATUS MESSAGE TO 'FINISHED' */
             .to("rabbitmq:{{RABBITMQ_ADDRESS}}/tasks?username={{RABBITMQ_USERNAME}}&password={{RABBITMQ_PSWD}}&autoDelete=false&routingKey=camel&queue={{RABBITMQ_QUEUE_OUT}}&bridgeEndpoint=true")
             .convertBodyTo(DBObject.class)
             /* MESSAGE NEED TO HAVE STATUS EQUALS 'FINISHED' */

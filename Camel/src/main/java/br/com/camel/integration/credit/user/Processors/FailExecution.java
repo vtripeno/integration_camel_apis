@@ -8,6 +8,10 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import java.io.StringWriter;
 
+/**
+ * @author Victor Tripeno
+ * This class is responsible to manage all Fail Message
+ */
 public class FailExecution implements Processor {
     @Override
     public void process(Exchange exchange) throws Exception {

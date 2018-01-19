@@ -24,8 +24,12 @@ public class IntegrationAggregationStrategy implements AggregationStrategy {
                 user = newExchange.getIn().getBody(User.class);
             }
 
+            CreditUser creditUser = constructCreditUser(user, credit);
+
+
             // Exit Message
-            newExchange.getIn().setBody(constructCreditUser(user, credit));
+            newExchange.getIn().setHeader("UniqueId", creditUser.getId());
+            newExchange.getIn().setBody(creditUser);
         }
         return newExchange;
     }
