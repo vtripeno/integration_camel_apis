@@ -88,3 +88,4 @@ The camel route will work with Database: 'camel-credit-user' and Collection: 'cr
 - Dead letter queue 
 - Finish aggregations strategy
 - Readme Node JS and Spring boot API
+- Points to save data with MongoDB
