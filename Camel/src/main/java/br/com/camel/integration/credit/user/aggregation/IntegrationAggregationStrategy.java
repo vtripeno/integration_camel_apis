@@ -25,6 +25,7 @@ public class IntegrationAggregationStrategy implements AggregationStrategy {
             }
 
             CreditUser creditUser = constructCreditUser(user, credit);
+            creditUser.setStatusMessage(StatusMessage.IN_PROGRESS.message());
 
 
             // Exit Message

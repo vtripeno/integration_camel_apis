@@ -3,7 +3,6 @@ package br.com.camel.integration.credit.user;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.mongodb.MongoClient;
-import org.apache.camel.Component;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

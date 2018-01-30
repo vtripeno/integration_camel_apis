@@ -12,6 +12,7 @@
         <camel.version>2.20.1</camel.version>
         <spring-boot-starter.version>1.4.7.RELEASE</spring-boot-starter.version>
         <version.maven-bundle-plugin>2.3.7</version.maven-bundle-plugin>
+        <mongo-version>3.6.1</mongo-version>
     </properties>
 
     <dependencies>
@@ -63,7 +64,7 @@
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver</artifactId>
-            <version>3.6.1</version>
+            <version>${mongo-version}</version>
         </dependency>
     </dependencies>
 

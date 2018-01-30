@@ -1,5 +1,6 @@
 package br.com.camel.integration.credit.user.routes;
 
+import br.com.camel.integration.credit.user.beans.Auditory;
 import br.com.camel.integration.credit.user.model.Credit;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.dataformat.JsonLibrary;

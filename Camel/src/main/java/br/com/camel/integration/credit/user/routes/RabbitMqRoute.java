@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
  * @author Victor Tripeno
  * Class responsible to read the RabbitMQ and send the message to the aggregation route
  */
-//@Component
+@Component
 public class RabbitMqRoute extends RouteBuilder {
 
     @Override
