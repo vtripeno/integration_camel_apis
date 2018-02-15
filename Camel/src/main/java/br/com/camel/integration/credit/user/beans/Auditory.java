@@ -13,8 +13,6 @@ import org.bson.Document;
  */
 public class Auditory {
 
-
-
     private CreditUser creditUser;
     private String mongoCollection;
     private String mongoDataBase;
