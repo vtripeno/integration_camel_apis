@@ -22,7 +22,7 @@ public class IntegrationRoute extends RouteBuilder {
          * Dead Letter Channel, it will try delivery the message three times each 60 seconds
          */
         errorHandler(
-                deadLetterChannel("rabbitmq{{RABBITMQ_ADDRESS}}/tasks?username={{RABBITMQ_USERNAME}}&password={{RABBITMQ_PSWD}}&autoDelete=false&routingKey=camel&queue={{RABBITMQ_QUEUE_DLQ=CREDIT.USER.DLQ}}&bridgeEndpoint=true")
+                deadLetterChannel("rabbitmq:{{RABBITMQ_ADDRESS}}/tasks?username={{RABBITMQ_USERNAME}}&password={{RABBITMQ_PSWD}}&autoDelete=false&routingKey=camel&queue={{RABBITMQ_QUEUE_DLQ}}&bridgeEndpoint=true")
                         .logExhaustedMessageHistory(true)
                         .maximumRedeliveries(3)
                         .redeliveryDelay(60000)
