@@ -41,7 +41,7 @@ public class IntegrationRoute extends RouteBuilder {
             .convertBodyTo(DBObject.class)
             .to("mongodb:myDb?database={{DATABASE}}&collection={{COLLECTION}}&operation=save")
             /* TODO: CHANGE THE STATUS MESSAGE TO 'FINISHED' and transform the Json to XML to send to the queue */
-            .process(new ChangeStatus(StatusMessage.IN_PROGRESS))
+            .process(new ChangeStatus(StatusMessage.FINISHED))
             .to("rabbitmq:{{RABBITMQ_ADDRESS}}/tasks?username={{RABBITMQ_USERNAME}}&password={{RABBITMQ_PSWD}}&autoDelete=false&routingKey=camel&queue={{RABBITMQ_QUEUE_OUT}}&bridgeEndpoint=true")
             /* TODO: Transform the XML in JSON to save in MongoDB */
             .convertBodyTo(DBObject.class)
