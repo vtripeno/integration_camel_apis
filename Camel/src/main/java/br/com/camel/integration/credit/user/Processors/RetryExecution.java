@@ -1,4 +1,4 @@
-package br.com.camel.integration.credit.user.Processors;
+package br.com.camel.integration.credit.user.processors;
 
 import br.com.camel.integration.credit.user.beans.Auditory;
 import br.com.camel.integration.credit.user.enums.StatusMessage;
