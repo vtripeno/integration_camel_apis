@@ -31,7 +31,7 @@ public class IntegrationRoute extends RouteBuilder {
         );
 
 
-        from("direct:integration").id("Integration")
+        from("direct:integration").id("integrationRoute")
             .to("log:foo")
             .aggregate(header("correlationId"), new IntegrationAggregationStrategy()).eagerCheckCompletion().completionSize(2)
             .to("direct:out-queue");
