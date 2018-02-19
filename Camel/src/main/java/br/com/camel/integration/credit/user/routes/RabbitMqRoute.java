@@ -2,6 +2,7 @@ package br.com.camel.integration.credit.user.routes;
 
 import org.apache.camel.builder.RouteBuilder;
 import org.springframework.stereotype.Component;
+import org.w3c.dom.Document;
 
 /**
  * @author Victor Tripeno
@@ -14,7 +15,8 @@ public class RabbitMqRoute extends RouteBuilder {
     public void configure() throws Exception {
         from("rabbitmq:{{RABBITMQ_ADDRESS}}/tasks?username={{RABBITMQ_USERNAME}}&password={{RABBITMQ_PSWD}}&autoDelete=false&routingKey=camel&queue={{RABBITMQ_QUEUE_IN}}&bridgeEndpoint=true")
 
-                // TODO: CREATE CORRELATION ID AND FILTER THE MESSAGE TO PUT IN A POJO
+                // TODO: CONVERT MESSAGE TO POJO
+                .setHeader("correlationId", xpath("/root/id/text()").stringResult())
                 .to("direct:integration");
     }
 }
