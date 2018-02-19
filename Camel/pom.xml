@@ -72,6 +72,11 @@
             <version>1.16.20</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-jacksonxml</artifactId>
+            <version>${camel.version}</version>
+        </dependency>
     </dependencies>
 
 

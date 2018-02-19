@@ -17,6 +17,7 @@ public class RabbitMqRoute extends RouteBuilder {
         .id("rabbitMqRoute")
                 // TODO: CONVERT MESSAGE TO POJO
                 .setHeader("correlationId", xpath("/root/id/text()").stringResult())
+//                .unmarshal().jacksonxml(User.class)
                 .marshal().json(JsonLibrary.Jackson)
                 .log("${body}")
                 .to("direct:integration");
