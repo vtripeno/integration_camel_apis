@@ -1,17 +1,13 @@
 package br.com.camel.integration.credit.user.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
-import org.springframework.boot.jackson.JsonComponent;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 @Data
-@JsonRootName(value = "data")
-@JsonComponent
-@JsonSerialize
+@XmlRootElement
 public class CreditUser implements Serializable {
 
     /**
@@ -21,12 +17,16 @@ public class CreditUser implements Serializable {
 
     @JsonProperty("_id")
     private String id;
-    @JsonProperty
+    @JsonProperty("cpf")
     private String cpf;
-    @JsonProperty
+    @JsonProperty("value")
     private Double value;
     @JsonProperty("anual_percentage")
     private Double anualPercentage;
+    @JsonProperty("name")
+    private String name;
+    @JsonProperty("age")
+    private Integer age;
     @JsonProperty
     private String statusMessage;
 
