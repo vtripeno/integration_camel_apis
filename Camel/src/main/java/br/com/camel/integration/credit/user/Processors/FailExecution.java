@@ -33,6 +33,8 @@ public class FailExecution implements Processor {
     public void process(Exchange exchange) throws Exception {
         System.out.println("FAIL");
 
+        System.out.println(exchange.getIn().getBody());
+
         CreditUser creditUser = exchange.getIn().getBody(CreditUser.class);
         creditUser.setStatusMessage(StatusMessage.FAIL.message());
 

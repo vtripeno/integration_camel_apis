@@ -82,9 +82,6 @@
             <artifactId>camel-xmljson</artifactId>
             <version>${camel.version}</version>
         </dependency>
-
-        <!-- And also XOM must be included. XOM cannot be included by default due to an incompatible
-        license with ASF; so add this manually -->
         <dependency>
             <groupId>xom</groupId>
             <artifactId>xom</artifactId>

@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 @Data
-@XmlRootElement(name = "user")
+@XmlRootElement
 public class User implements Serializable {
     /**
      *

@@ -25,12 +25,13 @@ public class IntegrationAggregationStrategy implements AggregationStrategy {
             }
 
             CreditUser creditUser = constructCreditUser(user, credit);
-            creditUser.setStatusMessage(StatusMessage.IN_PROGRESS.message());
-
 
             // Exit Message
             newExchange.getIn().setHeader("UniqueId", creditUser.getId());
             newExchange.getIn().setBody(creditUser);
+
+            System.out.println(newExchange.getIn().getHeaders());
+            System.out.println(newExchange.getIn().getBody(CreditUser.class));
         }
         return newExchange;
     }
@@ -39,6 +40,11 @@ public class IntegrationAggregationStrategy implements AggregationStrategy {
         CreditUser creditUser = new CreditUser();
         creditUser.setId(String.valueOf(UUID.randomUUID()));
         creditUser.setStatusMessage(StatusMessage.IN_PROGRESS.message());
+        creditUser.setValue(credit.getValue());
+        creditUser.setCpf(user.getCpf());
+        creditUser.setAnualPercentage(credit.getAnualPercentage());
+        creditUser.setAge(user.getAge());
+        creditUser.setName(user.getName());
 
         return creditUser;
     }

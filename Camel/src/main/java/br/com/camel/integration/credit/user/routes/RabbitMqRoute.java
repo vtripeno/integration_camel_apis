@@ -29,18 +29,12 @@ public class RabbitMqRoute extends RouteBuilder {
 
         from("rabbitmq:{{RABBITMQ_ADDRESS}}/tasks?username={{RABBITMQ_USERNAME}}&password={{RABBITMQ_PSWD}}&autoDelete=false&routingKey=camel&queue={{RABBITMQ_QUEUE_IN}}&bridgeEndpoint=true")
         .id("rabbitMqRoute")
-                // TODO: CONVERT MESSAGE TO POJO
                 .setHeader("correlationId", xpath("//*[local-name()='cpf']").stringResult())
                 .setBody().xpath("//*[local-name()='user']")
                 .marshal(xmlJsonFormat)
-                .log("foo:${body}")
-//                .unmarshal().json(JsonLibrary.Jackson, User.class)
-//                .process(exchange -> {
-//                    User user = exchange.getIn().getBody(User.class);
-//                    System.out.println(user.getName());
-//                    System.out.println(exchange.getIn().getHeaders());
-//                })
-                .log("${body}")
+                .setBody().jsonpath("user")
+                .marshal().json(JsonLibrary.Jackson)
+                .unmarshal().json(JsonLibrary.Jackson, User.class)
                 .to("direct:integration");
     }
 }
