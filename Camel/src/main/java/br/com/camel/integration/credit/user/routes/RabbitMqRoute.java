@@ -35,6 +35,7 @@ public class RabbitMqRoute extends RouteBuilder {
                 .setBody().jsonpath("user")
                 .marshal().json(JsonLibrary.Jackson)
                 .unmarshal().json(JsonLibrary.Jackson, User.class)
-                .to("direct:integration");
+                .to("seda:integration")
+        .end();
     }
 }

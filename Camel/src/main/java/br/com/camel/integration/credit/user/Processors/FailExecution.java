@@ -1,7 +1,5 @@
 package br.com.camel.integration.credit.user.processors;
 
-import br.com.camel.integration.credit.user.enums.StatusMessage;
-import br.com.camel.integration.credit.user.model.CreditUser;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.ProducerTemplate;
@@ -33,11 +31,6 @@ public class FailExecution implements Processor {
     public void process(Exchange exchange) throws Exception {
         System.out.println("FAIL");
 
-        System.out.println(exchange.getIn().getBody());
-
-        CreditUser creditUser = exchange.getIn().getBody(CreditUser.class);
-        creditUser.setStatusMessage(StatusMessage.FAIL.message());
-
         Exception exception = exchange.getProperty(Exchange.EXCEPTION_CAUGHT, Exception.class);
         Error error = new Error(exception.getMessage());
         JAXBContext jaxbContext = JAXBContext.newInstance(Error.class);
@@ -48,14 +41,16 @@ public class FailExecution implements Processor {
         StringWriter result = new StringWriter();
         jaxbMarshaller.marshal(error, result);
         StringBuilder stringBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-        stringBuilder.append(result);
-
-        // TODO: transform the creditUser in XML to sendo to queue
+        stringBuilder.append("<correlationId>")
+                .append(exchange.getIn().getHeader("correlationId"))
+                .append("</correlationId>")
+                .append(result);
 
         ProducerTemplate producerTemplate = exchange.getFromEndpoint().getCamelContext().createProducerTemplate();
         producerTemplate.sendBodyAndHeaders("direct:out-queue",
                 stringBuilder.toString(),
                 exchange.getIn().getHeaders());
 
+        exchange.getOut().setBody(stringBuilder.toString());
     }
 }

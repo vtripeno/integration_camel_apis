@@ -12,14 +12,16 @@ import java.util.UUID;
 public class IntegrationAggregationStrategy implements AggregationStrategy {
     @Override
     public Exchange aggregate(Exchange oldExchange, Exchange newExchange) {
-        Credit credit;
-        User user;
+        Credit credit = new Credit();
+        User user = new User();
         if(oldExchange != null) {
 
-            try {
+            if(oldExchange.getIn().getBody() instanceof User &&
+            newExchange.getIn().getBody() instanceof Credit) {
                 credit = newExchange.getIn().getBody(Credit.class);
                 user = oldExchange.getIn().getBody(User.class);
-            } catch (Exception e) {
+            } else if (oldExchange.getIn().getBody() instanceof Credit &&
+            newExchange.getIn().getBody() instanceof User) {
                 credit = oldExchange.getIn().getBody(Credit.class);
                 user = newExchange.getIn().getBody(User.class);
             }
