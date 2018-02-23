@@ -1,6 +1,7 @@
 package br.com.camel.integration.credit.user.routes;
 
 import br.com.camel.integration.credit.user.model.User;
+import org.apache.camel.ExchangePattern;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.dataformat.xmljson.XmlJsonDataFormat;
 import org.apache.camel.model.dataformat.JsonLibrary;
@@ -29,13 +30,14 @@ public class RabbitMqRoute extends RouteBuilder {
 
         from("rabbitmq:{{RABBITMQ_ADDRESS}}/tasks?username={{RABBITMQ_USERNAME}}&password={{RABBITMQ_PSWD}}&autoDelete=false&routingKey=camel&queue={{RABBITMQ_QUEUE_IN}}&bridgeEndpoint=true")
         .id("rabbitMqRoute")
+                .to("log:foo1")
                 .setHeader("correlationId", xpath("//*[local-name()='cpf']").stringResult())
                 .setBody().xpath("//*[local-name()='user']")
                 .marshal(xmlJsonFormat)
                 .setBody().jsonpath("user")
                 .marshal().json(JsonLibrary.Jackson)
                 .unmarshal().json(JsonLibrary.Jackson, User.class)
-                .to("seda:integration")
+                .to(ExchangePattern.InOnly, "direct:integration")
         .end();
     }
 }

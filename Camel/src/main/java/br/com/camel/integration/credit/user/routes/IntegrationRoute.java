@@ -31,7 +31,7 @@ public class IntegrationRoute extends RouteBuilder {
         xmlJsonFormat.setEncoding("UTF-8");
         xmlJsonFormat.setForceTopLevelObject(true);
         xmlJsonFormat.setTrimSpaces(true);
-        xmlJsonFormat.setRootName("CreditUser");
+        xmlJsonFormat.setRootName("data");
         xmlJsonFormat.setSkipNamespaces(true);
         xmlJsonFormat.setRemoveNamespacePrefixes(true);
         xmlJsonFormat.setExpandableProperties(Arrays.asList("d", "e"));
@@ -48,8 +48,7 @@ public class IntegrationRoute extends RouteBuilder {
                         .onRedelivery(new RetryExecution())
         );
 
-
-        from("seda:integration").id("integrationRoute")
+        from("direct:integration").id("integrationRoute")
             .to("log:pre_aggregate")
             .aggregate(header("correlationId"), new IntegrationAggregationStrategy()).eagerCheckCompletion().completionSize(2)
             .marshal().json(JsonLibrary.Jackson)
@@ -57,10 +56,13 @@ public class IntegrationRoute extends RouteBuilder {
 
         from("direct:out-queue").id("outQueue")
             .to("log:out_queue")
+//            .setProperty("myBody", simple("${body}"))
 //            .convertBodyTo(DBObject.class)
 //            .to("mongodb:myDb?database={{DATABASE}}&collection={{COLLECTION}}&operation=save")
             .to("log:status-in-progress")
             /* TODO: CHANGE THE STATUS MESSAGE TO 'FINISHED' and transform the Json to XML to send to the queue */
+//            .convertBodyTo(CreditUser.class)
+//            .setBody().exchangeProperty("myBody")
             .unmarshal().json(JsonLibrary.Jackson, CreditUser.class)
             .to("log:unmarshal-json")
             .process(new ChangeStatus(StatusMessage.FINISHED))

@@ -9,7 +9,7 @@
     <version>1.0.0</version>
 
     <properties>
-        <camel.version>2.20.1</camel.version>
+        <camel.version>2.20.2</camel.version>
         <spring-boot-starter.version>1.4.7.RELEASE</spring-boot-starter.version>
         <version.maven-bundle-plugin>2.3.7</version.maven-bundle-plugin>
         <mongo-version>3.6.1</mongo-version>

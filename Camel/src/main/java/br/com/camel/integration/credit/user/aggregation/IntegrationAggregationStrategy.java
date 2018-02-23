@@ -7,6 +7,7 @@ import br.com.camel.integration.credit.user.model.User;
 import org.apache.camel.Exchange;
 import org.apache.camel.processor.aggregate.AggregationStrategy;
 
+import java.util.Map;
 import java.util.UUID;
 
 public class IntegrationAggregationStrategy implements AggregationStrategy {
@@ -29,6 +30,9 @@ public class IntegrationAggregationStrategy implements AggregationStrategy {
             CreditUser creditUser = constructCreditUser(user, credit);
 
             // Exit Message
+            Map<String, Object> map = oldExchange.getIn().getHeaders();
+            map.putAll(newExchange.getIn().getHeaders());
+            newExchange.getIn().setHeaders(map);
             newExchange.getIn().setHeader("UniqueId", creditUser.getId());
             newExchange.getIn().setBody(creditUser);
 

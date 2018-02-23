@@ -20,7 +20,7 @@ public class CreditRoute extends RouteBuilder {
             .setHeader("correlationId").jsonpath("cpf")
             .marshal().json(JsonLibrary.Jackson)
             .unmarshal().json(JsonLibrary.Jackson, Credit.class)
-            .to(ExchangePattern.InOnly, "seda:integration")
+            .to(ExchangePattern.InOnly, "direct:integration")
         .end();
     }
 }
