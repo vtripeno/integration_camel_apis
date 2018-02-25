@@ -34,6 +34,11 @@ public class IntegrationAggregationStrategy implements AggregationStrategy {
             map.putAll(newExchange.getIn().getHeaders());
             newExchange.getIn().setHeaders(map);
             newExchange.getIn().setHeader("UniqueId", creditUser.getId());
+            try {
+                newExchange.getIn().setHeader("rabbitmq.ROUTING_KEY", newExchange.getContext().resolvePropertyPlaceholders("{{RABBITMQ_QUEUE_OUT}}"));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             newExchange.getIn().setBody(creditUser);
 
             System.out.println(newExchange.getIn().getHeaders());

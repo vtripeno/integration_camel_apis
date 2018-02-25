@@ -1,5 +1,6 @@
 package br.com.camel.integration.credit.user.processors;
 
+import br.com.camel.integration.credit.user.model.ErrorMessage;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.ProducerTemplate;
@@ -15,7 +16,7 @@ import java.io.StringWriter;
  */
 public class FailExecution implements Processor {
 
-    @Value( "${DATABASE-FAIL}" )
+    @Value( "${DATABASE_FAIL}" )
     private String database;
 
     @Value("${COLLECTION}")
@@ -32,25 +33,21 @@ public class FailExecution implements Processor {
         System.out.println("FAIL");
 
         Exception exception = exchange.getProperty(Exchange.EXCEPTION_CAUGHT, Exception.class);
-        Error error = new Error(exception.getMessage());
-        JAXBContext jaxbContext = JAXBContext.newInstance(Error.class);
+        ErrorMessage error = new ErrorMessage(exception.getMessage(), String.valueOf(exchange.getIn().getHeader("correlationId")));
+        JAXBContext jaxbContext = JAXBContext.newInstance(ErrorMessage.class);
         Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
         jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         jaxbMarshaller.setProperty(Marshaller.JAXB_FRAGMENT, true);
 
         StringWriter result = new StringWriter();
         jaxbMarshaller.marshal(error, result);
-        StringBuilder stringBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-        stringBuilder.append("<correlationId>")
-                .append(exchange.getIn().getHeader("correlationId"))
-                .append("</correlationId>")
+        StringBuilder stringBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
                 .append(result);
 
-        ProducerTemplate producerTemplate = exchange.getFromEndpoint().getCamelContext().createProducerTemplate();
-        producerTemplate.sendBodyAndHeaders("direct:out-queue",
-                stringBuilder.toString(),
-                exchange.getIn().getHeaders());
+        System.out.println("FAIL " + stringBuilder.toString());
 
-        exchange.getOut().setBody(stringBuilder.toString());
+        exchange.getIn().setHeader("rabbitmq.ROUTING_KEY", exchange.getContext().resolvePropertyPlaceholders("{{RABBITMQ_QUEUE_DLQ}}"));
+        exchange.getIn().setBody(stringBuilder.toString());
+
     }
 }

@@ -14,7 +14,6 @@ public class RestMethods extends RouteBuilder {
     public void configure() throws Exception {
         rest()
                 .post("/credit")
-                .produces("application/json")
                 .consumes("application/json")
                 .toD("direct:credit");
     }

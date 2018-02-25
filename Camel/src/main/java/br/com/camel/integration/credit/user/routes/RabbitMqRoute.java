@@ -28,9 +28,8 @@ public class RabbitMqRoute extends RouteBuilder {
         xmlJsonFormat.setRemoveNamespacePrefixes(true);
         xmlJsonFormat.setExpandableProperties(Arrays.asList("d", "e"));
 
-        from("rabbitmq:{{RABBITMQ_ADDRESS}}/tasks?username={{RABBITMQ_USERNAME}}&password={{RABBITMQ_PSWD}}&autoDelete=false&routingKey=camel&queue={{RABBITMQ_QUEUE_IN}}&bridgeEndpoint=true")
+        from("rabbitmq:{{RABBITMQ_ADDRESS}}/{{RABBITMQ_EXCHANGE}}?routingKey={{RABBITMQ_QUEUE_IN_ROUTING_KEY}}&username={{RABBITMQ_USERNAME}}&password={{RABBITMQ_PSWD}}&autoDelete=false&queue={{RABBITMQ_QUEUE_IN}}")
         .id("rabbitMqRoute")
-                .to("log:foo1")
                 .setHeader("correlationId", xpath("//*[local-name()='cpf']").stringResult())
                 .setBody().xpath("//*[local-name()='user']")
                 .marshal(xmlJsonFormat)
