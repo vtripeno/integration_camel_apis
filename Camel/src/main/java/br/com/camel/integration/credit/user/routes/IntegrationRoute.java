@@ -1,5 +1,6 @@
 package br.com.camel.integration.credit.user.routes;
 
+import br.com.camel.integration.credit.user.beans.Auditory;
 import br.com.camel.integration.credit.user.enums.StatusMessage;
 import br.com.camel.integration.credit.user.model.CreditUser;
 import br.com.camel.integration.credit.user.processors.ChangeStatus;
@@ -48,29 +49,23 @@ public class IntegrationRoute extends RouteBuilder {
         from("direct:integration").id("integrationRoute")
             .to("log:pre_aggregate")
             .aggregate(header("correlationId"), new IntegrationAggregationStrategy()).eagerCheckCompletion().completionSize(2)
-            .marshal().json(JsonLibrary.Jackson)
-            //            .setProperty("myBody", simple("${body}"))
-//            .unmarshal().json(JsonLibrary.Jackson, CreditUser.class)
-//            .convertBodyTo(DBObject.class)
-//            .to("mongodb:myDb?database={{DATABASE}}&collection={{COLLECTION}}&operation=save")
-            .to("log:status-in-progress")
-            /* TODO: CHANGE THE STATUS MESSAGE TO 'FINISHED' and transform the Json to XML to send to the queue */
-//            .convertBodyTo(CreditUser.class)
-//            .setBody().exchangeProperty("myBody")
-            .unmarshal().json(JsonLibrary.Jackson, CreditUser.class)
-            .to("log:unmarshal-json")
-            .process(new ChangeStatus(StatusMessage.FINISHED))
-            .marshal().json(JsonLibrary.Jackson)
-            .unmarshal(xmlJsonFormat)
             .to("direct:out-queue");
 
         from("direct:out-queue").id("outQueue")
             .to("log:out_queue")
+            .marshal().json(JsonLibrary.Jackson)
+            .unmarshal().json(JsonLibrary.Jackson, CreditUser.class)
+            .bean(Auditory.class, "saveData")
+            .process(new ChangeStatus(StatusMessage.FINISHED))
+            .marshal().json(JsonLibrary.Jackson)
+            .unmarshal(xmlJsonFormat)
             .to("rabbitmq:{{RABBITMQ_ADDRESS}}/{{RABBITMQ_EXCHANGE}}?routingKey={{RABBITMQ_QUEUE_OUT_ROUTING_KEY}}&username={{RABBITMQ_USERNAME}}&password={{RABBITMQ_PSWD}}&autoDelete=false&queue={{RABBITMQ_QUEUE_OUT}}")
-            .to("log:foo").end();
+
             /* TODO: Transform the XML in JSON to save in MongoDB */
 //            .convertBodyTo(DBObject.class)
 //            .to("mongodb:myDb?database={{DATABASE}}&collection={{COLLECTION}}&operation=save");
+            .to("log:end")
+            .end();
 
     }
 
