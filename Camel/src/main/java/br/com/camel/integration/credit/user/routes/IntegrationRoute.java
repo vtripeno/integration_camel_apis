@@ -61,9 +61,15 @@ public class IntegrationRoute extends RouteBuilder {
             .unmarshal(xmlJsonFormat)
             .to("rabbitmq:{{RABBITMQ_ADDRESS}}/{{RABBITMQ_EXCHANGE}}?routingKey={{RABBITMQ_QUEUE_OUT_ROUTING_KEY}}&username={{RABBITMQ_USERNAME}}&password={{RABBITMQ_PSWD}}&autoDelete=false&queue={{RABBITMQ_QUEUE_OUT}}")
 
+
             /* TODO: Transform the XML in JSON to save in MongoDB */
-//            .convertBodyTo(DBObject.class)
-//            .to("mongodb:myDb?database={{DATABASE}}&collection={{COLLECTION}}&operation=save");
+            .setBody().xpath("//*[local-name()='data']")
+            .to("log:setBody")
+            .marshal(xmlJsonFormat)
+            .to("log:marshal")
+            .setBody().jsonpath("data")
+            .convertBodyTo(DBObject.class)
+            .to("mongodb:myDb?database={{DATABASE}}&collection={{COLLECTION}}&operation=save")
             .to("log:end")
             .end();
 

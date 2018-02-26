@@ -14,6 +14,12 @@ RabbitMQ out queue. If during this process occur some problem, the Apache Camel 
 * OUT QUEUE: CREDIT.USER.OUT
 * Dead Letter Queue (backup): CREDIT.USER.DLQ
 
+This project is using the Exchange 'tasks' and each queue have a specific key, like this:
+
+* CREDIT.USER.IN = in
+* CREDIT.USER.OUT = out
+* CREDIT.USER.DLQ = dlq
+
 # RabbitMQ
 
 For install the RabbitMQ you will need install the Erlang first of all.
@@ -80,13 +86,3 @@ In this project you will need install MongoDB for connect on DataBase.
 After install MongoDb by default you will uses the address 'http://server-name:27017'.
 
 The camel route will work with Database: 'camel-credit-user' and Collection: 'credit-user'.
-
-# TO DO
-
-- Final contract spring boot API
-- Final contract node js API
-- Dead letter channel 
-- Finish aggregations strategy
-- Readme Node JS and Spring boot API
-- Points to save data with MongoDB
-- Create a Java Class specialist in save data in MongoDB for Fail and Retry DLC

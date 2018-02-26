@@ -8,28 +8,12 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.apache.camel.Exchange;
 import org.bson.Document;
-import org.springframework.beans.factory.annotation.Value;
 
 /**
  * @author Victor Tripeno
  * This class is responsible for save data in MongoDB
  */
 public class Auditory {
-
-//    @Value( "${DATABASE}" )
-//    private String database;
-//
-//    @Value( "${COLLECTION_FAIL}" )
-//    private String failCollection;
-//
-//    @Value("${COLLECTION}")
-//    private String collection;
-//
-//    @Value("${spring.data.mongodb.host}")
-//    private String mongoHost;
-//
-//    @Value("${spring.data.mongodb.port}")
-//    private String mongoPort;
 
     public Auditory() {}
 
