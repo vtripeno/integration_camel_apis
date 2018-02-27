@@ -1,7 +1,7 @@
 package br.com.camel.integration.credit.user.beans;
 
 import br.com.camel.integration.credit.user.model.CreditUser;
-import br.com.camel.integration.credit.user.model.ErrorMessage;
+import br.com.camel.integration.credit.user.model.MessageError;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
@@ -48,11 +48,11 @@ public class Auditory {
                     .append("statusmessage", creditUser.getStatusMessage())
                     .append("value", creditUser.getValue());
             dbCollection.insertOne(userCredit);
-        } else if(exchange.getIn().getBody() instanceof ErrorMessage) {
-            ErrorMessage errorMessage = exchange.getIn().getBody(ErrorMessage.class);
+        } else if(exchange.getIn().getBody() instanceof MessageError) {
+            MessageError errorMessage = exchange.getIn().getBody(MessageError.class);
 
             MongoCollection<Document> dbCollection = mongoDatabase.getCollection(String.valueOf(exchange.getContext().resolvePropertyPlaceholders("{{COLLECTION_FAIL}}")));
-            Document messageError = new Document("_id", exchange.getIn().getHeader("UniqueId"))
+            Document messageError = new Document("_id", errorMessage.getId())
                     .append("correlationId", errorMessage.getCorrelationId())
                     .append("message", errorMessage.getMessage());
             dbCollection.insertOne(messageError);

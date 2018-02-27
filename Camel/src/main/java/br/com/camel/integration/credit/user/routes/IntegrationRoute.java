@@ -40,8 +40,8 @@ public class IntegrationRoute extends RouteBuilder {
         errorHandler(
                 deadLetterChannel("rabbitmq:{{RABBITMQ_ADDRESS}}/{{RABBITMQ_EXCHANGE}}?routingKey={{RABBITMQ_QUEUE_DLQ_ROUTING_KEY}}&username={{RABBITMQ_USERNAME}}&password={{RABBITMQ_PSWD}}&autoDelete=false&queue={{RABBITMQ_QUEUE_DLQ}}")
                         .logExhaustedMessageHistory(true)
-                        .maximumRedeliveries(1)
-                        .redeliveryDelay(10000)
+                        .maximumRedeliveries(3)
+                        .redeliveryDelay(60000)
                         .onPrepareFailure(new FailExecution())
                         .onRedelivery(new RetryExecution())
         );
@@ -49,7 +49,13 @@ public class IntegrationRoute extends RouteBuilder {
         from("direct:integration").id("integrationRoute")
             .to("log:pre_aggregate")
             .aggregate(header("correlationId"), new IntegrationAggregationStrategy()).eagerCheckCompletion().completionSize(2)
-            .to("direct:out-queue");
+                // THIS CHOICE IS USED JUST FOR GENERATE EXCEPTION TEST
+            .choice()
+                .when(simple("${header.error} == 'true'"))
+                    .throwException(Exception.class, "com.mongodb.MongoWriteException: E11000 duplicate key error collection: camel-credit-user.credit-user index: _id_ dup key: { : \"7108c8e0-cc87-4d59-be85-5a86d1c337f2\" }")
+                .otherwise()
+                    .to("direct:out-queue")
+            .endChoice();
 
         from("direct:out-queue").id("outQueue")
             .to("log:out_queue")
@@ -60,13 +66,8 @@ public class IntegrationRoute extends RouteBuilder {
             .marshal().json(JsonLibrary.Jackson)
             .unmarshal(xmlJsonFormat)
             .to("rabbitmq:{{RABBITMQ_ADDRESS}}/{{RABBITMQ_EXCHANGE}}?routingKey={{RABBITMQ_QUEUE_OUT_ROUTING_KEY}}&username={{RABBITMQ_USERNAME}}&password={{RABBITMQ_PSWD}}&autoDelete=false&queue={{RABBITMQ_QUEUE_OUT}}")
-
-
-            /* TODO: Transform the XML in JSON to save in MongoDB */
             .setBody().xpath("//*[local-name()='data']")
-            .to("log:setBody")
             .marshal(xmlJsonFormat)
-            .to("log:marshal")
             .setBody().jsonpath("data")
             .convertBodyTo(DBObject.class)
             .to("mongodb:myDb?database={{DATABASE}}&collection={{COLLECTION}}&operation=save")

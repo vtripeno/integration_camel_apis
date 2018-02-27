@@ -6,8 +6,8 @@ import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 
 @XmlRootElement(name = "ERROR")
-@XmlType(propOrder = {"_id", "correlationId", "message"})
-public class ErrorMessage implements Serializable {
+@XmlType(propOrder = {"id", "correlationId", "message"})
+public class MessageError implements Serializable {
     /**
      *
      */
@@ -17,7 +17,7 @@ public class ErrorMessage implements Serializable {
     private String message;
     private String correlationId;
 
-    @XmlElement(name="_id")
+    @XmlElement(name="id")
     public String getId() {
         return id;
     }
@@ -32,11 +32,13 @@ public class ErrorMessage implements Serializable {
         return correlationId;
     }
 
-    public ErrorMessage(String id, String message, String correlationId) {
+    public MessageError(){}
+
+    public MessageError(String id, String message, String correlationId) {
         this.id = id;
         this.message = message;
         this.correlationId = correlationId;
     }
 
-    public ErrorMessage(){}
+
 }
