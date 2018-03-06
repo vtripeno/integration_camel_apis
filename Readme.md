@@ -90,4 +90,4 @@ The camel route will work with Database: 'camel-credit-user' and Collection: 'cr
 
 # Architecture
 
-![Alt text](.git/Arquitetura.png?raw=true "Architecture")  
+![Alt text](Architecture.png?raw=true "Architecture")  
