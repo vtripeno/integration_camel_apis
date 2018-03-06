@@ -86,3 +86,8 @@ In this project you will need install MongoDB for connect on DataBase.
 After install MongoDb by default you will uses the address 'http://server-name:27017'.
 
 The camel route will work with Database: 'camel-credit-user' and Collection: 'credit-user'.
+
+
+# Architecture
+
+![Alt text](.git/Arquitetura.png?raw=true "Architecture")  
