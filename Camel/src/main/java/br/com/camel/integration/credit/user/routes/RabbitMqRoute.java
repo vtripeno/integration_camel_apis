@@ -32,6 +32,7 @@ public class RabbitMqRoute extends RouteBuilder {
         .id("rabbitMqRoute")
                 .setHeader("correlationId", xpath("//*[local-name()='cpf']").stringResult())
                 .setBody().xpath("//*[local-name()='user']")
+                .to("log:corpo")
                 .marshal(xmlJsonFormat)
                 .setBody().jsonpath("user")
                 .marshal().json(JsonLibrary.Jackson)
