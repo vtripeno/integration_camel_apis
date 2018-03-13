@@ -2,6 +2,9 @@ package com.api.user.controller;
 
 import com.api.user.model.User;
 import com.api.user.service.XmlTransformation;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageProperties;
+import org.springframework.amqp.core.MessagePropertiesBuilder;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,7 +40,11 @@ public class UserController {
     @RequestMapping("/user")
     public String sendUser(@RequestBody User user) throws SOAPException, ParserConfigurationException, JAXBException, IOException {
 
-//        rabbitTemplate.convertAndSend(exchange, routingKey, XmlTransformation.transform(user));
+        MessageProperties props = MessagePropertiesBuilder.newInstance().setContentType(MessageProperties.CONTENT_TYPE_XML).build();
+        props.setHeader("Content-Type", "application/xml");
+
+        Message msg = new Message(XmlTransformation.transform(user).getBytes(), props);
+        rabbitTemplate.convertAndSend(exchange, routingKey, msg);
         return XmlTransformation.transform(user);
     }
 }
