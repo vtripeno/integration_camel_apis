@@ -7,7 +7,7 @@ API is running in 'http://server-name:9091/user'.
 Use the following
 request:
 ```json
-{"cpf":"12315156671", "name": "Bob", "age":20}
+{"cpf":"12345678910", "name": "Bob", "age":20}
 ```
 
 After executing succesfully the API will send the XML to a RabbitMQ queue and you will receive the following
@@ -18,7 +18,7 @@ response:
     <SOAP-ENV:Body>
         <user>
             <age>20</age>
-            <cpf>12315156671</cpf>
+            <cpf>12345678910</cpf>
             <name>Bob</name>
         </user>
     </SOAP-ENV:Body>

@@ -38,18 +38,22 @@ public class IntegrationRoute extends RouteBuilder {
          * Dead Letter Channel, it will try delivery the message three times each 60 seconds
          */
         errorHandler(
-                deadLetterChannel("rabbitmq:{{RABBITMQ_ADDRESS}}/{{RABBITMQ_EXCHANGE}}?routingKey={{RABBITMQ_QUEUE_DLQ_ROUTING_KEY}}&username={{RABBITMQ_USERNAME}}&password={{RABBITMQ_PSWD}}&autoDelete=false&queue={{RABBITMQ_QUEUE_DLQ}}")
+                deadLetterChannel("direct:dead")
                         .logExhaustedMessageHistory(true)
                         .maximumRedeliveries(3)
-                        .redeliveryDelay(60000)
+                        .redeliveryDelay(600)
                         .onPrepareFailure(new FailExecution())
                         .onRedelivery(new RetryExecution())
         );
 
+        from("direct:dead")
+            .log("Sending Exception to MyErrorProcessor")
+            .toD("rabbitmq:{{RABBITMQ_ADDRESS}}/{{RABBITMQ_EXCHANGE}}?routingKey={{RABBITMQ_QUEUE_DLQ_ROUTING_KEY}}&username={{RABBITMQ_USERNAME}}&password={{RABBITMQ_PSWD}}&autoDelete=false&queue={{RABBITMQ_QUEUE_DLQ}}&bridgeEndpoint=true");
+
         from("direct:integration").id("integrationRoute")
             .to("log:pre_aggregate")
             .aggregate(header("correlationId"), new IntegrationAggregationStrategy()).eagerCheckCompletion().completionSize(2)
-                // THIS CHOICE IS USED JUST FOR GENERATE EXCEPTION TEST
+            // THIS CHOICE IS USED JUST FOR GENERATE EXCEPTION TEST
             .choice()
                 .when(simple("${header.error} == 'true'"))
                     .throwException(Exception.class, "com.mongodb.MongoWriteException: E11000 duplicate key error collection: camel-credit-user.credit-user index: _id_ dup key: { : \"7108c8e0-cc87-4d59-be85-5a86d1c337f2\" }")
@@ -65,12 +69,12 @@ public class IntegrationRoute extends RouteBuilder {
             .process(new ChangeStatus(StatusMessage.FINISHED))
             .marshal().json(JsonLibrary.Jackson)
             .unmarshal(xmlJsonFormat)
-            .to("rabbitmq:{{RABBITMQ_ADDRESS}}/{{RABBITMQ_EXCHANGE}}?routingKey={{RABBITMQ_QUEUE_OUT_ROUTING_KEY}}&username={{RABBITMQ_USERNAME}}&password={{RABBITMQ_PSWD}}&autoDelete=false&queue={{RABBITMQ_QUEUE_OUT}}")
+            .toD("rabbitmq:{{RABBITMQ_ADDRESS}}/{{RABBITMQ_EXCHANGE}}?routingKey={{RABBITMQ_QUEUE_OUT_ROUTING_KEY}}&username={{RABBITMQ_USERNAME}}&password={{RABBITMQ_PSWD}}&autoDelete=false&queue={{RABBITMQ_QUEUE_OUT}}")
             .setBody().xpath("//*[local-name()='data']")
             .marshal(xmlJsonFormat)
             .setBody().jsonpath("data")
             .convertBodyTo(DBObject.class)
-            .to("mongodb:myDb?database={{DATABASE}}&collection={{COLLECTION}}&operation=save")
+            .toD("mongodb:myDb?database={{DATABASE}}&collection={{COLLECTION}}&operation=save")
             .to("log:end")
             .end();
 

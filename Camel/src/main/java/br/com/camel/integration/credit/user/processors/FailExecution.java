@@ -18,6 +18,7 @@ public class FailExecution implements Processor {
     public void process(Exchange exchange) throws Exception {
         System.out.println("FAIL");
         exchange.getIn().setHeader("rabbitmq.ROUTING_KEY", exchange.getContext().resolvePropertyPlaceholders("{{RABBITMQ_QUEUE_DLQ}}"));
+        exchange.getIn().setHeader("rabbitmq.REQUEUE", exchange.getContext().resolvePropertyPlaceholders("true"));
 
         Exception exception = exchange.getProperty(Exchange.EXCEPTION_CAUGHT, Exception.class);
         MessageError error = new MessageError(String.valueOf(exchange.getIn().getHeader("UniqueId")),
@@ -34,12 +35,10 @@ public class FailExecution implements Processor {
                 .append(result);
 
         exchange.getIn().setBody(error);
-//        exchange.getOut().setBody(error);
         Auditory auditory = new Auditory();
         auditory.saveData(exchange);
 
         exchange.getIn().setBody(stringBuilder.toString());
-//        exchange.getOut().setBody(stringBuilder.toString());
 
     }
 }

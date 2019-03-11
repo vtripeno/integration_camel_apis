@@ -28,6 +28,17 @@ After that you will download the RabbitMQ installer and execute this.
 
 If when you try install RabbitMQ you receive the message "Insufficient system resources exist to complete the requested service", please follow this steps:
 
+### RabbitMQ docker
+
+Command for run RabbitMQ with docker:
+```
+docker run -d --hostname rabbitmq --name rabbit13 -p 8080:15672 -p 5672:5672 -p 25676:25676 rabbitmq:3-management
+```
+
+After that you need acces the address *http://localhost:8080* and use:
+User: guest
+password: guest
+
 ## Fixing RabbitMQ installation
 
 1.Click Start, click Run, type regedit, and then click OK.
