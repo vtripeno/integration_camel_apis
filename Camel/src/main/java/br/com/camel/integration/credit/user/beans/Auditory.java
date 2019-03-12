@@ -31,11 +31,11 @@ public class Auditory {
         MongoClient mongoClient = new MongoClient(new MongoClientURI(uri));
         MongoDatabase mongoDatabase = mongoClient.getDatabase(String.valueOf(exchange.getContext().resolvePropertyPlaceholders("{{DATABASE}}")));
 
-        buildMongoBody(exchange, mongoClient, mongoDatabase);
+        buildMongoBody(exchange, mongoDatabase);
 
     }
 
-    private void buildMongoBody(Exchange exchange, MongoClient mongoClient, MongoDatabase mongoDatabase) throws Exception {
+    private void buildMongoBody(Exchange exchange, MongoDatabase mongoDatabase) throws Exception {
         if(exchange.getIn().getBody() instanceof CreditUser) {
             CreditUser creditUser = exchange.getIn().getBody(CreditUser.class);
 

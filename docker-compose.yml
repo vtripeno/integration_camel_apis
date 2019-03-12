@@ -1,0 +1,57 @@
+version: '3'
+services:    
+    rabbitmq:
+        build:
+            dockerfile: ./docker/rabbitmq.dockerfile
+            context: .
+        image: tripeno/rabbitmq-apresentacao
+        hostname: meu-rabbitmq
+        ports:
+            - 8080:15672 
+            - 5672:5672 
+            - 25676:25676
+        networks:
+            - production-network  
+        
+    mongodb:
+        image: mongo
+        hostname: meu-mongo-db
+        ports:
+            - 27018:27017 
+        networks:
+            - production-network
+        depends_on:
+            - "rabbitmq"  
+
+    spring-boot:
+        build:
+            dockerfile: "./Spring boot Api/docker/spring-boot-api.dockerfile"
+            context: .
+        image: tripeno/spring-boot-apresentacao-api
+        container_name: spring-boot-apresentacao-api
+        ports:
+            - 9091:9091 
+        networks:
+            - production-network
+        depends_on:
+            - "mongodb"
+            - "rabbitmq"
+
+    camel:
+        build:
+            dockerfile: ./Camel/docker/camel-integration.dockerfile
+            context: .
+        image: tripeno/camel-integration-apresentacao-rabbitmq-mongo
+        container_name: camel-integration-apresentacao-rabbitmq-mongo
+        ports:
+            - 9090:9090 
+        networks:
+            - production-network
+        depends_on:
+            - "mongodb"
+            - "rabbitmq"
+            - "spring-boot"
+
+networks:
+    production-network:
+        driver: bridge

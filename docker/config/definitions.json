@@ -1,0 +1,94 @@
+{
+  "rabbit_version": "3.7.12",
+  "users": [
+    {
+      "name": "guest",
+      "password_hash": "djWjw7hLi+kJS23iPWWSWGtHbtKDZP6sr4dX3cYqUbDBqmfJ",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": "administrator"
+    }
+  ],
+  "vhosts": [
+    {
+      "name": "/"
+    }
+  ],
+  "permissions": [
+    {
+      "user": "guest",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+  "topic_permissions": [],
+  "parameters": [],
+  "global_parameters": [
+    {
+      "name": "cluster_name",
+      "value": "rabbit@rabbitmq"
+    }
+  ],
+  "policies": [],
+  "queues": [
+    {
+      "name": "CREDIT.USER.IN",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "CREDIT.USER.OUT",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "CREDIT.USER.DLQ",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    }
+  ],
+  "exchanges": [
+    {
+      "name": "tasks",
+      "vhost": "/",
+      "type": "direct",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    }
+  ],
+  "bindings": [
+    {
+      "source": "tasks",
+      "vhost": "/",
+      "destination": "CREDIT.USER.DLQ",
+      "destination_type": "queue",
+      "routing_key": "dlq",
+      "arguments": {}
+    },
+    {
+      "source": "tasks",
+      "vhost": "/",
+      "destination": "CREDIT.USER.IN",
+      "destination_type": "queue",
+      "routing_key": "in",
+      "arguments": {}
+    },
+    {
+      "source": "tasks",
+      "vhost": "/",
+      "destination": "CREDIT.USER.OUT",
+      "destination_type": "queue",
+      "routing_key": "out",
+      "arguments": {}
+    }
+  ]
+}
